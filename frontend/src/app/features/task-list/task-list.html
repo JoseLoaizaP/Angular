@@ -1,0 +1,89 @@
+<div class="page">
+  <div class="page__inner">
+    <header class="page-header">
+      <div class="page-header__brand">
+        <span class="page-header__mark">FL</span>
+        <div>
+          <p class="page-header__eyebrow">Flowlist</p>
+          <h1 class="page-header__title">Tus tareas</h1>
+        </div>
+      </div>
+
+      <app-button variant="primary" (pressed)="openCreateForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14"></path>
+          <path d="M5 12h14"></path>
+        </svg>
+        Nueva tarea
+      </app-button>
+    </header>
+
+    @if (loading()) {
+      <div class="state-panel">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Cargando tus tareas…</p>
+      </div>
+    } @else if (loadError()) {
+      <div class="state-panel state-panel--error">
+        <p>{{ loadError() }}</p>
+        <app-button variant="secondary" size="sm" (pressed)="fetchTasks()">Reintentar</app-button>
+      </div>
+    } @else if (tasks().length === 0) {
+      <div class="state-panel state-panel--empty">
+        <p class="state-panel__title">Aún no tienes tareas</p>
+        <p>Crea la primera para empezar a organizar tu trabajo.</p>
+        <app-button variant="primary" (pressed)="openCreateForm()">Crear mi primera tarea</app-button>
+      </div>
+    } @else {
+      <div class="task-table" role="table" aria-label="Lista de tareas">
+        <div class="task-table__row task-table__row--head" role="row">
+          <span role="columnheader">Tarea</span>
+          <span role="columnheader">Estado</span>
+          <span role="columnheader">Actualizada</span>
+          <span role="columnheader" class="task-table__head-actions">Acciones</span>
+        </div>
+
+        @for (task of tasks(); track task._id) {
+          <app-task-item
+            [task]="task"
+            [processing]="processingIds().has(task._id)"
+            (edit)="openEditForm($event)"
+            (remove)="handleDelete($event)"
+          ></app-task-item>
+        }
+      </div>
+    }
+
+    <footer class="stats" aria-label="Resumen de tareas">
+      <div class="stats__item">
+        <span class="stats__value">{{ total() }}</span>
+        <span class="stats__label">Total</span>
+      </div>
+      <span class="stats__divider" aria-hidden="true"></span>
+      <div class="stats__item">
+        <span class="stats__value stats__value--pending">{{ pendingCount() }}</span>
+        <span class="stats__label">Pendientes</span>
+      </div>
+      <span class="stats__divider" aria-hidden="true"></span>
+      <div class="stats__item">
+        <span class="stats__value stats__value--in-progress">{{ inProgressCount() }}</span>
+        <span class="stats__label">En progreso</span>
+      </div>
+      <span class="stats__divider" aria-hidden="true"></span>
+      <div class="stats__item">
+        <span class="stats__value stats__value--completed">{{ completedCount() }}</span>
+        <span class="stats__label">Completadas</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+@if (isFormOpen()) {
+  <app-task-form
+    [task]="editingTask()"
+    [saving]="saving()"
+    [errorMessage]="formError()"
+    (save)="handleSave($event)"
+    (close)="closeForm()"
+  ></app-task-form>
+}

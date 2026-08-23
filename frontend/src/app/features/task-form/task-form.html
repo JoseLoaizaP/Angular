@@ -1,0 +1,70 @@
+<div class="modal-backdrop" (click)="onBackdropClick()">
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="heading()"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="modal__header">
+      <h2 class="modal__title">{{ heading() }}</h2>
+      <button type="button" class="modal__close" aria-label="Cerrar" (click)="close.emit()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+      </button>
+    </header>
+
+    <form class="modal__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label class="field__label" for="task-title">Título</label>
+        <input
+          id="task-title"
+          class="field__control"
+          type="text"
+          formControlName="title"
+          placeholder="Ej. Preparar presentación de sprint"
+          autocomplete="off"
+        />
+        @if (form.controls.title.invalid && form.controls.title.touched) {
+          <p class="field__error">El título debe tener entre 2 y 120 caracteres.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="task-description">Descripción</label>
+        <textarea
+          id="task-description"
+          class="field__control field__control--textarea"
+          formControlName="description"
+          rows="4"
+          placeholder="Agrega detalles, contexto o notas para esta tarea"
+        ></textarea>
+        @if (form.controls.description.invalid && form.controls.description.touched) {
+          <p class="field__error">La descripción no puede superar los 500 caracteres.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="task-status">Estado</label>
+        <select id="task-status" class="field__control field__control--select" formControlName="status">
+          @for (option of statuses; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="modal__server-error">{{ errorMessage() }}</p>
+      }
+
+      <footer class="modal__footer">
+        <app-button variant="ghost" (pressed)="close.emit()">Cancelar</app-button>
+        <app-button variant="primary" type="submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : isEditMode() ? 'Guardar cambios' : 'Crear tarea' }}
+        </app-button>
+      </footer>
+    </form>
+  </div>
+</div>

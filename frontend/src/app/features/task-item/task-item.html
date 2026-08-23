@@ -1,0 +1,46 @@
+<span class="task-cell task-cell--title" role="cell" data-label="Tarea">
+  <span class="task-cell__main">
+    <span class="task-cell__title">{{ task().title }}</span>
+    @if (task().description) {
+      <span class="task-cell__description">{{ task().description }}</span>
+    }
+  </span>
+</span>
+
+<span class="task-cell" role="cell" data-label="Estado">
+  <app-status-badge [status]="task().status"></app-status-badge>
+</span>
+
+<span class="task-cell task-cell--date" role="cell" data-label="Actualizada">
+  {{ task().updatedAt | date: "d MMM, HH:mm" }}
+</span>
+
+<span class="task-cell task-cell--actions" role="cell" data-label="Acciones">
+  <app-button
+    variant="ghost"
+    size="icon"
+    ariaLabel="Editar tarea"
+    [disabled]="processing()"
+    (pressed)="onEdit()"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+    </svg>
+  </app-button>
+
+  <app-button
+    variant="danger"
+    size="icon"
+    ariaLabel="Eliminar tarea"
+    [disabled]="processing()"
+    (pressed)="onRemove()"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 6h18"></path>
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+      <path d="M10 11v6"></path>
+      <path d="M14 11v6"></path>
+    </svg>
+  </app-button>
+</span>

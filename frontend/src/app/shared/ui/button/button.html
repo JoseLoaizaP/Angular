@@ -1,0 +1,12 @@
+<button
+  class="btn"
+  [class]="'btn--' + variant() + ' btn--' + size()"
+  [type]="type()"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="handleClick($event)"
+>
+  <span class="btn__content">
+    <ng-content></ng-content>
+  </span>
+</button>

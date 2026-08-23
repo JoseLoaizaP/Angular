@@ -1,0 +1,28 @@
+:host {
+  display: inline-flex;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--pending {
+  background: var(--color-pending-bg);
+  color: var(--color-pending-text);
+}
+
+.badge--in-progress {
+  background: var(--color-in-progress-bg);
+  color: var(--color-in-progress-text);
+}
+
+.badge--completed {
+  background: var(--color-completed-bg);
+  color: var(--color-completed-text);
+}

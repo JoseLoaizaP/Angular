@@ -1,0 +1,154 @@
+/* ---------------------------------------------------------------------
+   Flowlist — sistema de diseño global
+   ------------------------------------------------------------------ */
+
+:root {
+  /* Paleta base */
+  --color-bg: #eef5db;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9fbf1;
+
+  --color-cta: #f0b67f;
+  --color-cta-hover: #e7a465;
+  --color-cta-active: #dd9752;
+  --color-cta-text: #472c11;
+
+  --color-pending: #fe5f55;
+  --color-pending-bg: #ffe6e3;
+  --color-pending-text: #b7362c;
+
+  --color-in-progress: #d6d1b1;
+  --color-in-progress-bg: #f5f2e4;
+  --color-in-progress-text: #7a713f;
+
+  --color-completed: #c7efcf;
+  --color-completed-bg: #e9fbec;
+  --color-completed-text: #2f8f52;
+
+  --color-danger: #fe5f55;
+  --color-danger-hover: #e14a41;
+  --color-danger-bg: #ffe6e3;
+
+  /* Neutrales */
+  --color-text-primary: #23261f;
+  --color-text-secondary: #6c7163;
+  --color-text-muted: #9aa08c;
+  --color-border: rgba(35, 38, 31, 0.09);
+  --color-border-strong: rgba(35, 38, 31, 0.16);
+
+  /* Tipografia */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Radios: nada de esquinas cuadradas */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Espaciado */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(35, 38, 31, 0.06);
+  --shadow-md: 0 8px 24px -8px rgba(35, 38, 31, 0.16);
+  --shadow-lg: 0 24px 48px -16px rgba(35, 38, 31, 0.22);
+  --shadow-cta: 0 12px 24px -10px rgba(240, 182, 127, 0.65);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cta);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Scrollbar discreto, coherente con la paleta */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}

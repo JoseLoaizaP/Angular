@@ -1,0 +1,220 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-7) var(--space-5) var(--space-8);
+}
+
+.page__inner {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Encabezado */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.page-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page-header__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-cta), var(--color-completed));
+  color: var(--color-cta-text);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.page-header__eyebrow {
+  margin: 0 0 2px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.page-header__title {
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+}
+
+/* Tabla de tareas */
+.task-table {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px 160px 96px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.task-table__row {
+  display: contents;
+}
+
+.task-table__row--head span {
+  padding: var(--space-3) var(--space-5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.task-table__head-actions {
+  text-align: right;
+}
+
+/* Estados: carga, error, vacio */
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.state-panel__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.state-panel--error {
+  color: var(--color-pending-text);
+  background: var(--color-pending-bg);
+  border-color: transparent;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid var(--color-border-strong);
+  border-top-color: var(--color-cta);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Resumen inferior */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stats__value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.stats__value--pending {
+  color: var(--color-pending-text);
+}
+
+.stats__value--in-progress {
+  color: var(--color-in-progress-text);
+}
+
+.stats__value--completed {
+  color: var(--color-completed-text);
+}
+
+.stats__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.stats__divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--color-border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .page-header app-button {
+    display: flex;
+    width: 100%;
+  }
+
+  .page-header app-button ::ng-deep .btn {
+    width: 100%;
+  }
+
+  .task-table {
+    display: block;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  .task-table__row--head {
+    display: none;
+  }
+
+  .stats {
+    gap: var(--space-4);
+  }
+
+  .stats__divider {
+    display: none;
+  }
+}

@@ -1,0 +1,105 @@
+:host {
+  display: contents;
+}
+
+.task-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.15s ease;
+}
+
+:host(:last-child) .task-cell {
+  border-bottom: none;
+}
+
+:host(:hover) .task-cell {
+  background: var(--color-surface-alt);
+}
+
+:host(.task-row--processing) .task-cell {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.task-cell--title {
+  align-items: flex-start;
+}
+
+.task-cell__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.task-cell__title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  word-break: break-word;
+}
+
+.task-cell__description {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.task-cell--date {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.task-cell--actions {
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* Fallback en tarjetas apiladas para pantallas pequeñas */
+@media (max-width: 640px) {
+  :host {
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+    overflow: hidden;
+  }
+
+  :host(:last-child) {
+    margin-bottom: 0;
+  }
+
+  :host(:hover) .task-cell {
+    background: transparent;
+  }
+
+  .task-cell {
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .task-cell:last-child {
+    border-bottom: none;
+  }
+
+  .task-cell::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  .task-cell--title {
+    align-items: flex-start;
+  }
+}

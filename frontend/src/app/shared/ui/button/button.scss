@@ -1,0 +1,109 @@
+:host {
+  display: inline-flex;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn__content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Tamanos */
+.btn--md {
+  height: 46px;
+  padding: 0 24px;
+  font-size: 0.95rem;
+}
+
+.btn--sm {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 0.85rem;
+}
+
+.btn--icon {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Variante primaria (call to action) */
+.btn--primary {
+  background: var(--color-cta);
+  color: var(--color-cta-text);
+  box-shadow: var(--shadow-cta);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-cta-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px -10px rgba(240, 182, 127, 0.75);
+}
+
+.btn--primary:active:not(:disabled) {
+  background: var(--color-cta-active);
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Variante secundaria */
+.btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+}
+
+/* Variante fantasma (usada para "editar") */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+/* Variante de peligro (usada para "borrar") */
+.btn--danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-hover);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--color-danger);
+  color: #fff;
+  box-shadow: 0 10px 20px -10px rgba(254, 95, 85, 0.7);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
