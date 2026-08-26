@@ -3,6 +3,10 @@ import cors from 'cors';
 import taskRoutes from './routes/task.routes';
 import { notFoundHandler, errorHandler } from './middlewares/errorHandler';
 
+/**
+ * Construye y configura la instancia de Express (middlewares, rutas, manejo de errores)
+ * sin arrancar el servidor HTTP. Separarla de server.ts permite reutilizarla en tests.
+ */
 export const createApp = (): Application => {
   const app = express();
 

@@ -7,6 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT ?? 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
+/** Valida la configuración, conecta a MongoDB y levanta el servidor HTTP. */
 const start = async (): Promise<void> => {
   if (!MONGODB_URI) {
     throw new Error('Falta definir la variable de entorno MONGODB_URI');

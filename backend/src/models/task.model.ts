@@ -1,11 +1,13 @@
 import { Schema, model, Document } from 'mongoose';
 
+/** Estados posibles del ciclo de vida de una tarea. */
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'in-progress',
   COMPLETED = 'completed',
 }
 
+/** Forma de un documento de tarea tal como lo devuelve Mongoose. */
 export interface ITask extends Document {
   title: string;
   description: string;
@@ -35,4 +37,5 @@ const taskSchema = new Schema<ITask>(
   { timestamps: true },
 );
 
+/** Modelo Mongoose de tareas; persiste en la colección `tasks`. */
 export const Task = model<ITask>('Task', taskSchema);

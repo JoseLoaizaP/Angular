@@ -14,8 +14,23 @@ import { TaskForm } from '../task-form/task-form';
   styleUrl: './task-list.scss',
 })
 export class TaskList implements OnInit {
+  /**
+   * Inyección de dependencias: `inject(TaskService)` pide al inyector de
+   * Angular la instancia singleton registrada en `providedIn: 'root'`
+   * ([[task.service.ts]]). `TaskList` no sabe (ni le importa) que por debajo
+   * hay un `HttpClient` haciendo peticiones REST; solo depende de la
+   * abstracción `TaskService`. Esto permite testear el componente
+   * inyectando un `TaskService` falso y mantiene la lógica de HTTP fuera del
+   * componente (separación de responsabilidades).
+   */
   private readonly taskService = inject(TaskService);
 
+  // ---- Estado expuesto como signals -----------------------------------
+  // Estos signals se leen en `task-list.html` mediante *interpolación*
+  // (`{{ total() }}`, `{{ loadError() }}`) y *property binding*
+  // (`[task]="task"`, `[disabled]="processing()"` en los hijos). Al ser
+  // signals, cualquier cambio dispara automáticamente la actualización de
+  // la vista sin necesidad de `ChangeDetectorRef` ni zonas manuales.
   readonly tasks = signal<Task[]>([]);
   readonly loading = signal(true);
   readonly loadError = signal<string | null>(null);
@@ -26,6 +41,9 @@ export class TaskList implements OnInit {
   readonly formError = signal<string | null>(null);
   readonly processingIds = signal<ReadonlySet<string>>(new Set());
 
+  // `computed()` deriva nuevos valores reactivos a partir de `tasks()`.
+  // También se consumen por interpolación en el pie de página de
+  // estadísticas (`{{ total() }}`, `{{ pendingCount() }}`, ...).
   readonly total = computed(() => this.tasks().length);
   readonly pendingCount = computed(() => this.tasks().filter((t) => t.status === 'pending').length);
   readonly inProgressCount = computed(
@@ -39,6 +57,12 @@ export class TaskList implements OnInit {
     this.fetchTasks();
   }
 
+  /**
+   * Carga la lista de tareas desde `TaskService`. Este método se dispara
+   * desde la plantilla mediante *event binding* en el botón "Reintentar"
+   * (`(pressed)="fetchTasks()"` en `task-list.html`), donde `pressed` es un
+   * `output()` personalizado del componente `Button` (ver [[button.ts]]).
+   */
   fetchTasks(): void {
     this.loading.set(true);
     this.loadError.set(null);
@@ -52,24 +76,50 @@ export class TaskList implements OnInit {
       });
   }
 
+  /**
+   * Invocado por *event binding* desde `task-list.html`
+   * (`(pressed)="openCreateForm()"` en el botón "Nueva tarea"). Abre el
+   * modal `TaskForm` en modo creación estableciendo `editingTask` a `null`,
+   * valor que `TaskForm` recibe por *property binding* (`[task]="editingTask()"`)
+   * y usa para decidir si arranca vacío o precargado.
+   */
   openCreateForm(): void {
     this.editingTask.set(null);
     this.formError.set(null);
     this.isFormOpen.set(true);
   }
 
+  /**
+   * Manejador de un evento personalizado de `TaskItem`: en la plantilla se
+   * enlaza como `(edit)="openEditForm($event)"`. `TaskItem` emite la tarea
+   * completa a través de su `output<Task>() edit` (ver [[task-item.ts]]), y
+   * `$event` aquí es exactamente el `Task` emitido. Es el mecanismo estándar
+   * de *event binding* para comunicación hijo → padre en Angular.
+   */
   openEditForm(task: Task): void {
     this.editingTask.set(task);
     this.formError.set(null);
     this.isFormOpen.set(true);
   }
 
+  /**
+   * Se enlaza como `(close)="closeForm()"` al `output<void>() close` de
+   * `TaskForm`, que se dispara al pulsar "Cancelar", la "X", el fondo del
+   * modal o la tecla Escape (ver `@HostListener` en [[task-form.ts]]).
+   */
   closeForm(): void {
     this.isFormOpen.set(false);
     this.editingTask.set(null);
     this.formError.set(null);
   }
 
+  /**
+   * Se enlaza como `(save)="handleSave($event)"` al `output<CreateTaskPayload>()
+   * save` de `TaskForm`. `$event` es el valor tipado del formulario reactivo
+   * emitido en `onSubmit()` ([[task-form.ts]]). Aquí decide, según si hay una
+   * tarea en edición, si delega en `TaskService.create` o `TaskService.update`
+   * (dependencia inyectada arriba).
+   */
   handleSave(payload: CreateTaskPayload): void {
     const editing = this.editingTask();
     this.saving.set(true);
@@ -94,6 +144,13 @@ export class TaskList implements OnInit {
     });
   }
 
+  /**
+   * Se enlaza como `(remove)="handleDelete($event)"` al `output<Task>()
+   * remove` de `TaskItem`. Mientras la petición está en curso, añade el id
+   * de la tarea a `processingIds`, signal que `TaskItem` recibe por
+   * *property binding* (`[processing]="processingIds().has(task._id)"`) para
+   * deshabilitar sus botones de acción durante el borrado.
+   */
   handleDelete(task: Task): void {
     this.processingIds.update((ids) => new Set(ids).add(task._id));
 
